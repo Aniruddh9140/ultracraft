@@ -116,30 +116,42 @@ src/entity/         entity base, player, mobs, drops, projectiles
 src/game/           inventory, recipes, tile entities, redstone, audio, save,
                     commands, input, game loop
 src/ui/             HUD, inventory/crafting/container screens, menus
-tools/              dev server, single-file bundler, the four test suites
+tools/              dev server, single-file bundler, the five test suites
 Ultracraft.html     one-file build: double-click and play (generated)
 PLAY.command/.sh/.bat   double-click launchers (Node required)
 ```
 
 ## Testing
 
-There is no browser in CI, so the game is verified four ways from Node:
+There is no browser in CI, so the game is verified five ways from Node:
 
 ```bash
 npm run check       # static: parse, imports, registry cross-checks, GLSL sanity
+npm run glsl        # compiles every shader for real with glslang (no GPU needed)
 npm run smoke       # unit: registries, worldgen, lighting, physics, recipes
 npm run headless    # boots the real game against a stubbed WebGL2 context
 npm run scenarios   # plays the game: smelting, mobs, redstone, portals, …
 npm run bundle      # builds Ultracraft.html and boots that too
-npm test            # all five
+npm test            # all six
 ```
 
 `tools/stub.js` fakes just enough DOM and WebGL2 to run the real renderer,
 build the real texture arrays and tick the real game loop headlessly.
 
 Current status: **36 files parse, 32 modules import, 0 missing textures,
-0 broken recipes, 28 shader stages clean, 83 unit checks, 21 boot checks,
-50 gameplay scenarios and a self-booting single-file build — all passing.**
+0 broken recipes, 14 shader programs compiled by glslang, 83 unit checks,
+21 boot checks, 50 gameplay scenarios and a self-booting single-file build —
+all passing.**
+
+Shaders are compiled for real, not just inspected. `tools/vendor/glslang`
+holds a pinned WebAssembly build of glslang 15.4.0 (the Khronos reference
+front end, the same one ANGLE is built on), verified by sha256 on every load,
+so `npm run glsl` compiles all 14 programs as ESSL 300 with no GPU, no network
+and no install. It is worth having: the game once shipped a shadow shader with
+`vec2 o = uShadowTexel * 0.75;` where `uShadowTexel` is a *float* — every
+structural check passed, the headless suite passed (its WebGL2 stub never
+compiles anything), and it only showed up on a real driver as
+"Failed to start". That class of bug is now a test failure.
 
 ## Browser support
 

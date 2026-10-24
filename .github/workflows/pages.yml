@@ -28,6 +28,10 @@ jobs:
         with:
           node-version: '20'
 
+      # compile every shader for real; a stage that fails here fails on every GPU
+      - name: Compile the shaders
+        run: node tools/glsl.js
+
       # regenerate Ultracraft.html and prove the bundle still boots
       - name: Build the single-file version
         run: node tools/bundle.js --verify

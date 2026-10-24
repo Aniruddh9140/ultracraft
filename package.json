@@ -10,7 +10,8 @@
     "dev": "node tools/serve.js",
     "bundle": "node tools/bundle.js --verify",
     "check": "node tools/check.js",
-    "test": "node tools/check.js && node tools/smoke.js && node tools/headless.js && node tools/scenarios.js && node tools/bundle.js --verify",
+    "glsl": "node tools/glsl.js",
+    "test": "node tools/check.js && node tools/glsl.js && node tools/smoke.js && node tools/headless.js && node tools/scenarios.js && node tools/bundle.js --verify",
     "smoke": "node tools/smoke.js",
     "headless": "node tools/headless.js",
     "scenarios": "node tools/scenarios.js"

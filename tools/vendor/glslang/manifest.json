@@ -1,0 +1,112 @@
+{
+  "formatVersion": 1,
+  "packageVersion": "0.1.0",
+  "toolchain": {
+    "glslang": {
+      "repository": "https://github.com/KhronosGroup/glslang.git",
+      "tag": "15.4.0",
+      "commit": "8a85691a0740d390761a1008b4696f57facd02c4"
+    },
+    "emscripten": {
+      "version": "4.0.9",
+      "commit": "bbf1caa6e24f64fca9eb6a13a9e02d3f42123e77"
+    },
+    "binaryen": {
+      "version": "131",
+      "repository": "https://github.com/WebAssembly/binaryen",
+      "tag": "version_131",
+      "flags": [
+        "-Oz",
+        "--enable-bulk-memory",
+        "--enable-nontrapping-float-to-int",
+        "--enable-sign-ext",
+        "--enable-mutable-globals",
+        "--strip-debug",
+        "--strip-producers"
+      ]
+    },
+    "abiVersion": 1,
+    "defaultVersion": 300,
+    "resourceProfile": "glslang-15.4.0-default",
+    "stackBytes": 8388608,
+    "initialMemoryBytes": 33554432,
+    "maximumMemoryBytes": 268435456
+  },
+  "mode": "GLSL/ESSL validation; no SPIR-V, HLSL, GPU, native addon, or filesystem in WASM",
+  "optimization": {
+    "tool": "wasm-opt version 131",
+    "flags": [
+      "-Oz",
+      "--enable-bulk-memory",
+      "--enable-nontrapping-float-to-int",
+      "--enable-sign-ext",
+      "--enable-mutable-globals",
+      "--strip-debug",
+      "--strip-producers"
+    ],
+    "input": {
+      "sha256": "38811b8d5d02cb96e393391b40fd1a72185666d2c1977b2b3783d8b81c2c92b0",
+      "bytes": 993594
+    },
+    "output": {
+      "sha256": "4fde936fe3784f3735090e9c3b318515df26e9ec8501ab9fede2df167249ba11",
+      "bytes": 976460
+    }
+  },
+  "memory": {
+    "stackBytes": 8388608,
+    "initialBytes": 33554432,
+    "maximumBytes": 268435456
+  },
+  "sources": {
+    "CMakeLists.txt": "e6c82b446b968cffdd44d9375efdc32974bd5a70986734629f040fd482d335b2",
+    "scripts/build.py": "decb887a546192195b804b560eb717e11a0677d834c68a5a701fc29b2bec7404",
+    "toolchain.lock.json": "460107ec7bef4422328415e954786bab44fe427080f51e7739e62004a5fe3e3e",
+    "src/validator.cpp": "dd540196dbd8bb920a73b945597bff6453b66f2352928a626d1dadcddfc9c2e1",
+    "src/index.mjs": "88e89ce302520d4122a9bec672a8846d917776ed37ebc10708077dc93ad57e64",
+    "src/index.d.ts": "6321b11ad4e40d9af39a677746cbd199281c101a50dae57afcd01dfa692057c6",
+    "src/cli.mjs": "96215b6a4458d71e59de726bafc11e0e03dc1b05b64453d1d7d221f4404d9574"
+  },
+  "files": {
+    "LICENSE.emscripten.txt": {
+      "sha256": "620a78084fc7ca97c0b5dea9abf891f3ffcadfdbf305276f099c9c4e12fc1d86",
+      "bytes": 5093
+    },
+    "LICENSE.glslang.txt": {
+      "sha256": "adb783e734e906d1f46db5df29991dbde84bdb0ceab502ac2febb44fe3c2b5f4",
+      "bytes": 54705
+    },
+    "LICENSE.libcxx.txt": {
+      "sha256": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b",
+      "bytes": 16703
+    },
+    "LICENSE.libcxxabi.txt": {
+      "sha256": "e2b35be49f7284a45b7baca8fc7b3ab7440e7902392b2528a457816b5bb2a15c",
+      "bytes": 16706
+    },
+    "LICENSE.musl.txt": {
+      "sha256": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af",
+      "bytes": 6204
+    },
+    "cli.mjs": {
+      "sha256": "96215b6a4458d71e59de726bafc11e0e03dc1b05b64453d1d7d221f4404d9574",
+      "bytes": 4629
+    },
+    "glslang-validator.mjs": {
+      "sha256": "34a37827899002e4321de2ad5f94cd0a84478b54f90899b62fb1e7c442fcc6b6",
+      "bytes": 13168
+    },
+    "glslang-validator.wasm": {
+      "sha256": "4fde936fe3784f3735090e9c3b318515df26e9ec8501ab9fede2df167249ba11",
+      "bytes": 976460
+    },
+    "index.d.ts": {
+      "sha256": "6321b11ad4e40d9af39a677746cbd199281c101a50dae57afcd01dfa692057c6",
+      "bytes": 1433
+    },
+    "index.mjs": {
+      "sha256": "88e89ce302520d4122a9bec672a8846d917776ed37ebc10708077dc93ad57e64",
+      "bytes": 7825
+    }
+  }
+}
