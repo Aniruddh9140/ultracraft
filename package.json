@@ -1,0 +1,24 @@
+{
+  "name": "ultracraft",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ultracraft - an open-source, AAA-rendered voxel sandbox game that runs on potato devices. Zero runtime dependencies, raw WebGL2, no build step.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "start": "node tools/serve.js",
+    "dev": "node tools/serve.js",
+    "check": "node tools/check.js",
+    "test": "node tools/check.js && node tools/smoke.js && node tools/headless.js && node tools/scenarios.js",
+    "smoke": "node tools/smoke.js",
+    "headless": "node tools/headless.js",
+    "scenarios": "node tools/scenarios.js"
+  },
+  "keywords": [
+    "voxel",
+    "minecraft",
+    "webgl2",
+    "game",
+    "engine"
+  ]
+}
