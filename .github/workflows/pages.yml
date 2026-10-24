@@ -1,0 +1,56 @@
+name: Pages
+
+# Publishes the game to GitHub Pages on every push to main, so Ultracraft has
+# a plain URL you can open (and install) on any device. There is no build step:
+# the site is the repository, plus the generated single-file build.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # regenerate Ultracraft.html and prove the bundle still boots
+      - name: Build the single-file version
+        run: node tools/bundle.js --verify
+
+      - name: Stage the site
+        run: |
+          mkdir -p site
+          cp -r index.html manifest.webmanifest sw.js styles src site/
+          cp Ultracraft.html package.json README.md LICENSE site/
+          mkdir -p site/tools
+          cp tools/serve.js site/tools/
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
