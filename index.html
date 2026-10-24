@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0f14" />
+<meta name="description" content="Ultracraft - a free, open-source voxel sandbox with AAA rendering that runs on low-end devices." />
+<title>Ultracraft</title>
+<link rel="stylesheet" href="styles/main.css" />
+<link rel="manifest" href="manifest.webmanifest" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="glcanvas"></canvas>
+
+    <!-- ============================ HUD ============================ -->
+    <div id="hud" class="hidden">
+      <div id="crosshair"><span class="ch ch-h"></span><span class="ch ch-v"></span></div>
+
+      <div id="hotbar-wrap">
+        <div id="hotbar"></div>
+        <div id="held-name"></div>
+      </div>
+
+      <div id="status-left">
+        <div id="hearts" class="stat-row"></div>
+        <div id="armor" class="stat-row"></div>
+        <div id="hunger" class="stat-row"></div>
+        <div id="air" class="stat-row"></div>
+        <div id="xp-wrap"><div id="xp-bar"><div id="xp-fill"></div></div><div id="xp-level">0</div></div>
+      </div>
+
+      <div id="status-right">
+        <div id="effect-list"></div>
+      </div>
+
+      <div id="boss-bar" class="hidden"><div id="boss-name"></div><div id="boss-track"><div id="boss-fill"></div></div></div>
+
+      <div id="chat-wrap">
+        <div id="chat-log"></div>
+        <input id="chat-input" type="text" maxlength="200" placeholder="Press T to chat, / for commands" autocomplete="off" spellcheck="false" />
+      </div>
+
+      <div id="subtitle"></div>
+      <div id="toast"></div>
+    </div>
+
+    <!-- ========================= TOUCH CONTROLS ===================== -->
+    <div id="touch" class="hidden">
+      <div id="tstick"><div id="tstick-knob"></div></div>
+      <div id="tbtns">
+        <button class="tbtn" data-act="jump">&#8679;</button>
+        <button class="tbtn" data-act="sneak">&#8681;</button>
+        <button class="tbtn" data-act="fly">&#9992;</button>
+        <button class="tbtn" data-act="inv">&#9636;</button>
+      </div>
+      <div id="tlook"></div>
+    </div>
+
+    <!-- =========================== MENUS ============================ -->
+    <div id="menu-root"></div>
+
+    <div id="loading">
+      <div id="loading-logo">ULTRACRAFT</div>
+      <div id="loading-bar"><div id="loading-fill"></div></div>
+      <div id="loading-text">Starting…</div>
+    </div>
+  </div>
+
+  <noscript>Ultracraft needs JavaScript and WebGL2.</noscript>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
