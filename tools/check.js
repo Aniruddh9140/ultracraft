@@ -143,7 +143,8 @@ for (const b of BLOCKS) {
 console.log(`  parity: ${idMismatch} block/item id mismatches`);
 
 // ---------------------------------------------------------------------------
-// 7. GLSL sanity (no GPU here, so this is a structural pass)
+// 7. GLSL sanity - structural only: real compilation lives in
+//    tools/glsl.js, which builds every stage with glslang.
 // ---------------------------------------------------------------------------
 const { SHADERS } = await import(pathToFileURL(path.join(ROOT, 'src/render/shaders.js')).href);
 

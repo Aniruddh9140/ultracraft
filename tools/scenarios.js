@@ -604,6 +604,74 @@ await scenario('the HUD reflects the player state', () => {
   return { cond: hud.health === 13 && hud.hunger === 7, detail: `hp ${hud.health} food ${hud.hunger}` };
 });
 
+// ---- entity bounding boxes: aabb() is called with no argument from five
+// ---- places (hit test, entity pick, arrow sweep, F3 overlay). It used to
+// ---- crash the game in a browser with "Cannot set properties of undefined".
+/** Drop every entity but the player so these scenarios see only their own. */
+function clearMobs() {
+  for (const e of [...game.entities]) if (e !== player) { e.removed = true; e.dead = true; }
+}
+
+await scenario('a mob bounding box can be read without an output array', () => {
+  plate();
+  clearMobs();
+  player.pos.set([BASE_X + 0.5, FLOOR_Y, BASE_Z + 0.5]);
+  const mob = game.spawnMob('zombie', BASE_X + 2.5, FLOOR_Y, BASE_Z + 0.5);
+  const box = mob.aabb();
+  const finite = box.length === 6 && [...box].every(Number.isFinite);
+  const wide = box[3] > box[0] && box[4] > box[1];
+  return { cond: finite && wide, detail: `[${[...box].map((n) => n.toFixed(1)).join(', ')}]` };
+});
+
+await scenario('hitting a mob uses its bounding box without crashing', () => {
+  plate();
+  clearMobs();
+  player.pos.set([BASE_X + 0.5, FLOOR_Y, BASE_Z + 0.5]);
+  player.yaw = -Math.PI / 2; player.pitch = 0;              // look towards +x
+  const mob = game.spawnMob('zombie', BASE_X + 1.2, FLOOR_Y, BASE_Z + 0.5);
+  game.attackCooldown = 0; player.attackCooldown = 0;
+  const before = mob.health;
+  game.attack(true);
+  return { cond: mob.health < before, detail: `health ${before} -> ${mob.health}` };
+});
+
+await scenario('picking and sweeping return the mob, not an error', () => {
+  plate();
+  clearMobs();
+  player.pos.set([BASE_X + 0.5, FLOOR_Y, BASE_Z + 0.5]);
+  player.yaw = -Math.PI / 2; player.pitch = 0;
+  const mob = game.spawnMob('zombie', BASE_X + 1.5, FLOOR_Y, BASE_Z + 0.5);
+  const picked = game.pickEntity(6);
+  const from = [BASE_X + 0.5, FLOOR_Y + 0.5, BASE_Z + 0.5];
+  const to = [BASE_X + 4.5, FLOOR_Y + 0.5, BASE_Z + 0.5];
+  const swept = game.sweepEntities(from, to, 0.4, player);
+  const worldSwept = world.sweepEntities(from, to, 0.4, player);
+  const okAll = picked === mob && swept === mob && worldSwept === mob;
+  return { cond: okAll, detail: `pick ${picked === mob ? 'mob' : picked}, sweep ${swept === mob ? 'mob' : swept}, world ${worldSwept === mob ? 'mob' : worldSwept}` };
+});
+
+await scenario('a block cannot be placed inside a mob', () => {
+  plate();
+  clearMobs();
+  player.pos.set([BASE_X + 0.5, FLOOR_Y, BASE_Z + 0.5]);
+  game.spawnMob('cow', BASE_X + 1.5, FLOOR_Y, BASE_Z + 0.5);
+  const held = new ItemStack('stone', 64);
+  player.inventory.setHeld(held);
+  const placed = game.placeBlock({ x: BASE_X + 1, y: FLOOR_Y, z: BASE_Z, face: [0, 1, 0] }, held);
+  return { cond: placed === false, detail: `placeBlock returned ${placed}` };
+});
+
+await scenario('the debug overlay draws boxes around mobs', () => {
+  plate();
+  clearMobs();
+  player.pos.set([BASE_X + 0.5, FLOOR_Y, BASE_Z + 0.5]);
+  game.spawnMob('zombie', BASE_X + 2.5, FLOOR_Y, BASE_Z + 0.5);
+  game.debug = true;
+  game.buildDebugGeometry();
+  game.debug = false;
+  return { cond: true, detail: 'hitboxes built' };
+});
+
 await scenario('the debug overlay lists the essentials', () => {
   const lines = game.getDebugText();
   return { cond: lines.length >= 6 && lines.join('\n').includes('fps'), detail: `${lines.length} lines` };

@@ -98,7 +98,7 @@ float shadowAt(vec3 worldPos, vec3 n, float ndl, float viewZ) {
     }
     sum *= 0.111111;
   } else if (uShadowQuality == 1) {
-    vec2 o = uShadowTexel * 0.75;
+    vec2 o = vec2(uShadowTexel * 0.75);
     sum  = texture(uShadowMap, vec4(uv + vec2(-o.x, -o.y), float(idx), ref));
     sum += texture(uShadowMap, vec4(uv + vec2( o.x, -o.y), float(idx), ref));
     sum += texture(uShadowMap, vec4(uv + vec2(-o.x,  o.y), float(idx), ref));
