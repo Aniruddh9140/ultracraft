@@ -32,6 +32,10 @@ jobs:
       - name: Compile the shaders
         run: node tools/glsl.js
 
+      # play the game with real worker threads, WebAudio and input events
+      - name: Browser-like boot
+        run: node tools/browser.js
+
       # regenerate Ultracraft.html and prove the bundle still boots
       - name: Build the single-file version
         run: node tools/bundle.js --verify

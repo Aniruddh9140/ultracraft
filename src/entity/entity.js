@@ -60,11 +60,21 @@ export class Entity {
 
   get eyeY() { return this.pos[1] + this.eyeHeight; }
 
+  /**
+   * Axis-aligned box as [minX, minY, minZ, maxX, maxY, maxZ].
+   *
+   * `out` is optional on purpose: half the callers (hit-testing, entity
+   * picking, the F3 overlay) just want the box for one expression, and
+   * allocating there would put a garbage-collection pause into every swing of
+   * the fist. They get a per-entity scratch array instead; callers that need
+   * to keep the box around pass their own.
+   */
   aabb(out) {
+    const o = out || (this._aabb || (this._aabb = new Float32Array(6)));
     const w = this.width / 2;
-    out[0] = this.pos[0] - w; out[1] = this.pos[1]; out[2] = this.pos[2] - w;
-    out[3] = this.pos[0] + w; out[4] = this.pos[1] + this.height; out[5] = this.pos[2] + w;
-    return out;
+    o[0] = this.pos[0] - w; o[1] = this.pos[1]; o[2] = this.pos[2] - w;
+    o[3] = this.pos[0] + w; o[4] = this.pos[1] + this.height; o[5] = this.pos[2] + w;
+    return o;
   }
 
   // -------------------------------------------------------------------------

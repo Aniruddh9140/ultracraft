@@ -116,14 +116,14 @@ src/entity/         entity base, player, mobs, drops, projectiles
 src/game/           inventory, recipes, tile entities, redstone, audio, save,
                     commands, input, game loop
 src/ui/             HUD, inventory/crafting/container screens, menus
-tools/              dev server, single-file bundler, the five test suites
+tools/              dev server, single-file bundler, the six test suites
 Ultracraft.html     one-file build: double-click and play (generated)
 PLAY.command/.sh/.bat   double-click launchers (Node required)
 ```
 
 ## Testing
 
-There is no browser in CI, so the game is verified five ways from Node:
+There is no browser in CI, so the game is verified six ways from Node:
 
 ```bash
 npm run check       # static: parse, imports, registry cross-checks, GLSL sanity
@@ -131,17 +131,22 @@ npm run glsl        # compiles every shader for real with glslang (no GPU needed
 npm run smoke       # unit: registries, worldgen, lighting, physics, recipes
 npm run headless    # boots the real game against a stubbed WebGL2 context
 npm run scenarios   # plays the game: smelting, mobs, redstone, portals, …
+npm run browser     # plays it with real worker threads, WebAudio and input events
 npm run bundle      # builds Ultracraft.html and boots that too
-npm test            # all six
+npm test            # all seven
 ```
 
 `tools/stub.js` fakes just enough DOM and WebGL2 to run the real renderer,
 build the real texture arrays and tick the real game loop headlessly.
+`tools/browserish.js` adds the three things a stub cannot fake — worker
+threads, a WebAudio graph and real input events — so `npm run browser` plays
+the game the way a browser does: chunk generation off-thread, sounds, keys,
+mouse, touch, mobs and the debug overlay.
 
 Current status: **36 files parse, 32 modules import, 0 missing textures,
 0 broken recipes, 14 shader programs compiled by glslang, 83 unit checks,
-21 boot checks, 50 gameplay scenarios and a self-booting single-file build —
-all passing.**
+21 boot checks, 55 gameplay scenarios, a browser-like playthrough and a
+self-booting single-file build — all passing.**
 
 Shaders are compiled for real, not just inspected. `tools/vendor/glslang`
 holds a pinned WebAssembly build of glslang 15.4.0 (the Khronos reference
